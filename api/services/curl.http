@@ -1,0 +1,11 @@
+curl localhost:3000
+
+####
+
+curl localhost:3000/products
+
+####
+
+curl -X POST localhost:3000/products \
+-H 'Content-Type: application/json' \
+-d '{ "name": "Product", "price": 150 }'

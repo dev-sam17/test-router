@@ -1,42 +1,15 @@
+const OrdersController = require('../controllers/orders')
 const express = require('express');
 const router = express.Router();
 
-router.get('/', (req, res, next) => {
-    res.status(200).json({
-        message: 'Orders were fetched'
-    })
-});
+router.get('/', OrdersController.getOrders)
 
-router.post('/', (req, res, next) => {
-    const order = {
-        productId: req.body.productId,
-        quantity: req.body.quantity
-    }
-    res.status(200).json({
-        message: 'orders was created',
-        order: order
-    });
-});
+router.post('/', OrdersController.createOrder)
 
-router.get('/:orderId', (req, res, next) => {
-    const id = req.params.productId;
-    res.status(200).json({
-        message: 'Order details',
-        orderId : id
-    });
-});
+router.get('/:orderId', OrdersController.getOrderById)
 
-router.patch('/:orderId', (req, res, next) => {
-    res.status(200).json({
-        message: 'Updated order'
-    });
-});
+router.patch('/:orderId', OrdersController.updateOrderById)
 
-router.delete('/:orderId', (req, res, next) => {
-    res.status(200).json({
-        message: 'Deleted order'
-    });
-});
-
+router.delete('/:orderId', OrdersController.deleteOrderById)
 
 module.exports = router;

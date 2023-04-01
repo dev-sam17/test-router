@@ -1,0 +1,60 @@
+const OrdersService = require('../services/orders')
+
+const getOrders = (req, res, next) => {
+    res.status(200).json({
+        orders: OrdersService.getOrders(),
+    })
+}
+
+const createOrders = (req, res, next) => {
+    const order = {
+        id: String(new Date().getTime()),
+        name: req.body.name,
+        address: req.body.address,
+    }
+
+    const createdOrder = OrdersService.createOrder(order)
+
+    res.status(200).json({
+        createdOrder,
+    })
+}
+
+const getOrderById = (req, res, next) => {
+    const id = req.params.orderId
+    const order = OrdersService.getOrderById(id)
+
+    if (!product) {
+        return res.status(404).json({
+            message: 'Product not found',
+        })
+    }
+    res.status(200).json({
+        product,
+    })   
+}
+
+const updateOrderById = (req, res, next) => {
+    res.status(200).json({
+        message: OrdersService.updateOrderById(
+            req.params.productId,
+            req.body
+        ),
+    })
+} 
+
+const deleteOrderById = (req, res, next) => {
+    res.status(200).json({
+        message: OrdersService.deleteOrderById(
+            req.params.productId
+        ),
+    })
+}
+
+module.exports = {
+    getOrders,
+    createOrders,
+    getOrderById,
+    updateOrderById,
+    deleteOrderById,
+}

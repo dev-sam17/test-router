@@ -21,7 +21,7 @@ function createOrder(order) {
 }
 
 function getOrderById(id) {
-    return orders.filter((product) => product.id == id)[0]
+    return orders.filter((order) => order.id == id)[0]
 }
 
 function updateOrderById(id, newOrder) {
@@ -45,7 +45,7 @@ function updateOrderById(id, newOrder) {
 }
 
 function deleteOrderById(id) {
-    products = products.filter((product) => product.id != id)
+    orders = orders.filter((order) => order.id != id)
     return true
 }
 

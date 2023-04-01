@@ -6,7 +6,7 @@ const getOrders = (req, res, next) => {
     })
 }
 
-const createOrders = (req, res, next) => {
+const createOrder = (req, res, next) => {
     const order = {
         id: String(new Date().getTime()),
         name: req.body.name,
@@ -24,20 +24,20 @@ const getOrderById = (req, res, next) => {
     const id = req.params.orderId
     const order = OrdersService.getOrderById(id)
 
-    if (!product) {
+    if (!order) {
         return res.status(404).json({
             message: 'Product not found',
         })
     }
     res.status(200).json({
-        product,
+        order,
     })   
 }
 
 const updateOrderById = (req, res, next) => {
     res.status(200).json({
         message: OrdersService.updateOrderById(
-            req.params.productId,
+            req.params.orderId,
             req.body
         ),
     })
@@ -46,14 +46,14 @@ const updateOrderById = (req, res, next) => {
 const deleteOrderById = (req, res, next) => {
     res.status(200).json({
         message: OrdersService.deleteOrderById(
-            req.params.productId
+            req.params.orderId
         ),
     })
 }
 
 module.exports = {
     getOrders,
-    createOrders,
+    createOrder,
     getOrderById,
     updateOrderById,
     deleteOrderById,

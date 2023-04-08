@@ -9,7 +9,10 @@ const productRoutes = require('./api/routes/products')
 const orderRoutes = require('./api/routes/orders')
 const userRoutes = require('./api/routes/user')
 
-mongoose.connect('mongodb+srv://samrock17:' + process.env.MONGO_ATLAS_PW + '@cluster0.poipsye.mongodb.net/?retryWrites=true&w=majority')
+const mongoUrl = 'mongodb+srv://samrock17:' + process.env.MONGO_ATLAS_PW + '@cluster0.poipsye.mongodb.net/?retryWrites=true&w=majority'
+console.log(mongoUrl)
+
+mongoose.connect(mongoUrl)
 // mongoose.connect('mongodb+srv://samrock17:' + 'MONGO_ATLAS_PW' + '@cluster0.poipsye.mongodb.net/?retryWrites=true&w=majority')
 
 app.use(morgan('dev'))

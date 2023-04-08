@@ -1,16 +1,16 @@
 const ProductsController = require('../controllers/products')
 const express = require('express')
 const router = express.Router()
-const checkAuth = require('../middleware/check-auth')
+// const checkAuth = require('../middleware/check-auth')
 
 router.get('/', ProductsController.getProducts)
 
-router.post('/', checkAuth, ProductsController.createProduct)
+router.post('/',  ProductsController.createProduct)
 
 router.get('/:productId', ProductsController.getProductById)
 
-router.patch('/:productId',checkAuth, ProductsController.updateProductById)
+router.patch('/:productId', ProductsController.updateProductById)
 
-router.delete('/:productId', checkAuth, ProductsController.deleteProductById)
+router.delete('/:productId',  ProductsController.deleteProductById)
 
 module.exports = router

@@ -1,15 +1,15 @@
-const mongoose = require('mongoose');
 const Product = require('../models/product');
 
-function getProducts() {
-	Product.find().select('name price _id').exec().then(docs => {
+function getProducts(callbackFunction) {
+
+	Product.find().select('name price _id').exec().then((docs) => {
 		const response = {
 			count: docs.length,
-			products: docs.map(doc =>{
+			products: docs.map(doc => {
 				return {
-					name : doc.name,
-					price : doc.price,
-					_id : doc._id,
+					name: doc.name,
+					price: doc.price,
+					_id: doc._id,
 					request: {
 						type: 'GET',
 						url: 'localhost:3000/products/' + doc._id
@@ -17,12 +17,14 @@ function getProducts() {
 				}
 			})
 		}
-        return response
-	}
-	).catch(err => {
-		console.log(err);
-		res.status(500).json({
-			error: err
+		
+		callbackFunction(response)
+	
+	}).catch(error => {
+		console.log(error);
+		
+		callbackFunction({
+			error
 		})
 	});
 }

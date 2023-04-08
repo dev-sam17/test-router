@@ -3,8 +3,10 @@ const mongoose = require('mongoose');
 const Product = require('../models/product');
 
 const getProducts = (req, res, next) => {
-	console.log(ProductsService.getProducts())
-	return res.status(200).json({message: "success"})
+	ProductsService.getProducts((result) => {
+		console.log('callback function called with', result)
+		res.json(result)
+	})
 }
 
 const createProduct = (req, res, next) => {

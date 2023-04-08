@@ -3,8 +3,12 @@ const mongoose = require('mongoose');
 const Product = require('../models/product');
 
 const getProducts = async (req, res, next) => {
-	const result = await ProductsService.getProducts()
-	return res.json(result)
+	try {
+		const result = await ProductsService.getProducts()
+		return res.json(result)
+	} catch (error) {
+		return res.status(500).json({ error })
+	}
 }
 
 const createProduct = (req, res, next) => {
@@ -33,7 +37,7 @@ const createProduct = (req, res, next) => {
 			res.status(500).json({
 				error: err,
 			})
-		});	
+		});
 }
 
 const getProductById = (req, res, next) => {
@@ -42,21 +46,21 @@ const getProductById = (req, res, next) => {
 		console.log("from databae", doc);
 		if (doc) {
 			res.status(200).json({
-				name : doc.name,
-				price : doc.price,
-				_id : doc._id,
+				name: doc.name,
+				price: doc.price,
+				_id: doc._id,
 				request: {
-						type: 'GET',
-						description: 'Get all products',
-						url: 'localhost:3000/products'
-					}
+					type: 'GET',
+					description: 'Get all products',
+					url: 'localhost:3000/products'
+				}
 			});
 		} else {
-			res.status(404).json({message: 'No valid entry found for this id'})
+			res.status(404).json({ message: 'No valid entry found for this id' })
 		}
 	}).catch(err => {
 		console.log(err);
-		res.status(500).json({error: err});
+		res.status(500).json({ error: err });
 	});
 }
 
@@ -66,7 +70,7 @@ const updateProductById = (req, res, next) => {
 	for (const ops of req.body) {
 		updateOps[ops.propName] = ops.value;
 	}
-	Product.findByIdAndUpdate(id, { $set: updateOps}).exec().then(result => {
+	Product.findByIdAndUpdate(id, { $set: updateOps }).exec().then(result => {
 		console.log(result);
 		res.status(200).json({
 			message: "Updated product successfully",

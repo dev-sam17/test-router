@@ -1,15 +1,16 @@
 const OrdersController = require('../controllers/orders')
 const express = require('express');
 const router = express.Router();
+const checkAuth = require('../middleware/check-auth')
 
-router.get('/', OrdersController.getOrders)
+router.get('/',checkAuth, OrdersController.getOrders)
 
-router.post('/', OrdersController.createOrder)
+router.post('/',checkAuth, OrdersController.createOrder)
 
-router.get('/:orderId', OrdersController.getOrderById)
+router.get('/:orderId',checkAuth, OrdersController.getOrderById)
 
-router.patch('/:orderId', OrdersController.updateOrderById)
+router.patch('/:orderId',checkAuth, OrdersController.updateOrderById)
 
-router.delete('/:orderId', OrdersController.deleteOrderById)
+router.delete('/:orderId',checkAuth, OrdersController.deleteOrderById)
 
 module.exports = router;

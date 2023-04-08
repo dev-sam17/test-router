@@ -1,19 +1,10 @@
 const ProductsService = require('../services/products')
 const mongoose = require('mongoose');
-
-const Product = require('../models/products');
+const Product = require('../models/product');
 
 const getProducts = (req, res, next) => {
-	Product.find().exec().then(docs => {
-		console.log(docs);
-		res.status(200).json(docs);
-	}
-	).catch(err => {
-		console.log(err);
-		res.status(500).json({
-			error: err
-		})
-	});
+	console.log(ProductsService.getProducts())
+	return res.status(200).json({message: "success"})
 }
 
 const createProduct = (req, res, next) => {
@@ -24,9 +15,17 @@ const createProduct = (req, res, next) => {
 	})
 	product.save().then(result => {
 		console.log(result);
-		res.status(200).json({
-			message: "handling POST requests to /products",
-			createdProduct: result,
+		res.status(201).json({
+			message: "Created product successfully",
+			createdProduct: {
+				name: result.name,
+				price: result.price,
+				_id: result._id,
+				request: {
+					type: 'POST',
+					url: 'localhost:3000/products/' + result._id
+				}
+			}
 		})
 	})
 		.catch(err => {
@@ -34,19 +33,24 @@ const createProduct = (req, res, next) => {
 			res.status(500).json({
 				error: err,
 			})
-		});
-
-//	const createdProduct = ProductsService.createProduct(product)
-
-	
+		});	
 }
 
 const getProductById = (req, res, next) => {
 	const id = req.params.productId
-	Product.findById(id).exec().then(doc => {
+	Product.findById(id).select('name price _id').exec().then(doc => {
 		console.log("from databae", doc);
 		if (doc) {
-			res.status(200).json(doc);
+			res.status(200).json({
+				name : doc.name,
+				price : doc.price,
+				_id : doc._id,
+				request: {
+						type: 'GET',
+						description: 'Get all products',
+						url: 'localhost:3000/products'
+					}
+			});
 		} else {
 			res.status(404).json({message: 'No valid entry found for this id'})
 		}
@@ -55,17 +59,6 @@ const getProductById = (req, res, next) => {
 		res.status(500).json({error: err});
 	});
 }
-//	const product = ProductsService.getProductById(id)
-
-// 	if (!product) {
-// 		return res.status(404).json({
-// 			message: 'Product not found',
-// 		})
-// 	}
-// 	res.status(200).json({
-// 		product,
-// 	})
-// }
 
 const updateProductById = (req, res, next) => {
 	const id = req.params.productId;
@@ -75,7 +68,18 @@ const updateProductById = (req, res, next) => {
 	}
 	Product.findByIdAndUpdate(id, { $set: updateOps}).exec().then(result => {
 		console.log(result);
-		res.status(200).json(result);
+		res.status(200).json({
+			message: "Updated product successfully",
+			updatedProduct: {
+				name: result.name,
+				price: result.price,
+				_id: result._id,
+				request: {
+					type: 'PATCH',
+					url: 'localhost:3000/products/' + result._id
+				}
+			}
+		});
 	}).catch(err => {
 		console.log(err);
 		res.status(500).json({
@@ -87,7 +91,17 @@ const updateProductById = (req, res, next) => {
 const deleteProductById = (req, res, next) => {
 	const id = req.params.productId;
 	Product.findByIdAndDelete(id).exec().then(result => {
-		res.status(200).json(result);
+		res.status(200).json({
+			message: "Deleted product successfully",
+			deletedProduct: {
+				name: result.name,
+				price: result.price,
+				_id: result._id,
+				request: {
+					type: 'DELETE'
+				}
+			}
+		});
 	}).catch(err => {
 		console.log(err);
 		res.status(500).json({

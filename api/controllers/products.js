@@ -2,11 +2,9 @@ const ProductsService = require('../services/products')
 const mongoose = require('mongoose');
 const Product = require('../models/product');
 
-const getProducts = (req, res, next) => {
-	ProductsService.getProducts((result) => {
-		console.log('callback function called with', result)
-		res.json(result)
-	})
+const getProducts = async (req, res, next) => {
+	const result = await ProductsService.getProducts()
+	return res.json(result)
 }
 
 const createProduct = (req, res, next) => {

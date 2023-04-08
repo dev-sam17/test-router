@@ -1,8 +1,9 @@
 const Product = require('../models/product');
 
-function getProducts(callbackFunction) {
+async function getProducts() {
+	try {
+		const docs = await Product.find().select('name price _id').exec()
 
-	Product.find().select('name price _id').exec().then((docs) => {
 		const response = {
 			count: docs.length,
 			products: docs.map(doc => {
@@ -17,16 +18,12 @@ function getProducts(callbackFunction) {
 				}
 			})
 		}
-		
-		callbackFunction(response)
-	
-	}).catch(error => {
-		console.log(error);
-		
-		callbackFunction({
-			error
-		})
-	});
+
+		return response
+	} catch (error) {
+		console.error(error)
+		return { error }
+	}
 }
 
 module.exports = {

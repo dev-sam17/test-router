@@ -7,10 +7,10 @@ router.get('/', ProductsController.getProducts)
 
 router.post('/',  ProductsController.createProduct)
 
-router.get('/:productId', ProductsController.getProductById)
+router.get('/:product_id', ProductsController.getProductById)
 
-router.patch('/:productId', ProductsController.updateProductById)
+router.patch('/:product_id', ProductsController.updateProductById)
 
-router.delete('/:productId',  ProductsController.deleteProductById)
+router.delete('/:product_id',  ProductsController.deleteProductById)
 
 module.exports = router

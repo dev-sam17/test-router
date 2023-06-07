@@ -1,8 +1,6 @@
 const ProductsService = require('../services/products')
-const mongoose = require('mongoose');
-const Product = require('../models/product');
 
-const getProducts = async (req, res, next) => {
+const getProducts = async (req, res) => {
 	try {
 		const result = await ProductsService.getProducts()
 		return res.json(result)
@@ -11,7 +9,7 @@ const getProducts = async (req, res, next) => {
 	}
 }
 
-const createProduct = async (req, res, next) => {
+const createProduct = async (req, res) => {
 	const name = req.body.name
 	const price = req.body.price
 	try {
@@ -22,10 +20,10 @@ const createProduct = async (req, res, next) => {
 			createdProduct: {
 				name: result.name,
 				price: result.price,
-				_id: result._id,
+				id: result.product_id,
 				request: {
 					type: 'POST',
-					url: 'localhost:3000/products/' + result._id
+					url: 'localhost:3000/products/' + result.product_id
 				}
 			}
 		})
@@ -37,8 +35,8 @@ const createProduct = async (req, res, next) => {
 	}
 }
 
-const getProductById = async (req, res, next) => {
-	const id = req.params.productId
+const getProductById = async (req, res) => {
+	const id = req.params.product_id
 	try {
 		const result = await ProductsService.getProductById(id)
 		return res.json(result)
@@ -47,14 +45,13 @@ const getProductById = async (req, res, next) => {
 	}
 }
 
-const updateProductById = async (req, res, next) => {
-	const id = req.params.productId;
-	const updateOps = {};
-	for (const ops of req.body) {
-		updateOps[ops.propName] = ops.value;
-	}
+const updateProductById = async (req, res) => {
+	const id = req.params.product_id;
+	const name = req.body.name;
+	const price = req.body.price;
+	
 	try {
-		const response = await ProductsService.updateProductById(id, updateOps)
+		const response = await ProductsService.updateProductById(id, name, price)
 		console.log(response)
 		return res.json(response)
 	} catch (error) {
@@ -64,8 +61,8 @@ const updateProductById = async (req, res, next) => {
 	}
 }
 
-const deleteProductById = async (req, res, next) => {
-	const id = req.params.productId;
+const deleteProductById = async (req, res) => {
+	const id = req.params.product_id;
 	try {
 		const response =await ProductsService.deleteProductById(id)
 		console.log(response)
